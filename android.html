@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Android Projects | Saurabh Mehra</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #08080c;
+    color: white;
+}
+
+.page {
+    min-height: 100vh;
+    padding: 20px 16px 40px;
+    background:
+        radial-gradient(circle at top, #29215c, #08080c 65%);
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.logo-small {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #8b6cff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a08cff;
+    background: #151522;
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    margin: 5px;
+    border-radius: 30px;
+    background: #8066ff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    background: #927cff;
+}
+
+.home {
+    text-align: center;
+    padding: 20px 5px;
+}
+
+.logo {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid #8b6cff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto 25px;
+    font-size: 48px;
+    font-weight: bold;
+    color: #a08cff;
+    background: #151522;
+    box-shadow: 0 0 40px #5c45ff55;
+}
+
+h1 {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.name {
+    color: #9b86ff;
+}
+
+.subtitle {
+    color: #bcbcc7;
+    font-size: 18px;
+    margin-bottom: 22px;
+}
+
+.description {
+    max-width: 700px;
+    margin: auto;
+    color: #d0d0d8;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.card {
+    margin: 20px auto;
+    max-width: 700px;
+    padding: 24px;
+    background: #14141c;
+    border: 1px solid #292936;
+    border-radius: 22px;
+}
+
+.card h2 {
+    color: #9b86ff;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #bcbcc7;
+    line-height: 1.7;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.project {
+    background: #14141c;
+    border: 1px solid #292936;
+    border-radius: 20px;
+    padding: 22px;
+}
+
+.project h2 {
+    color: #a08cff;
+    font-size: 21px;
+    margin-bottom: 10px;
+}
+
+.project p {
+    color: #bcbcc7;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.tool-box {
+    max-width: 700px;
+    margin: 25px auto;
+    padding: 25px;
+    background: #14141c;
+    border: 1px solid #39305e;
+    border-radius: 22px;
+    text-align: center;
+}
+
+.input {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid #39305e;
+    background: #0d0d14;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.result {
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 15px;
+    background: #0d0d14;
+    color: #cfc6ff;
+    word-break: break-word;
+}
+
+.calc {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.calc button {
+    padding: 17px 5px;
+    border: none;
+    border-radius: 12px;
+    background: #252237;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.calc button:hover {
+    background: #8066ff;
+}
+
+.calc-display {
+    width: 100%;
+    padding: 18px;
+    background: #08080c;
+    border: 1px solid #39305e;
+    border-radius: 12px;
+    color: white;
+    font-size: 25px;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.qr-image {
+    margin: 20px auto;
+    max-width: 250px;
+    width: 100%;
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+@media(max-width:600px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .logo {
+        width: 120px;
+        height: 120px;
+        font-size: 40px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+<div class="container">
+
+<div class="topbar">
+<div class="logo-small">SM</div>
+<a class="btn" href="projects.html">← Projects</a>
+</div>
+
+<div class="tool-box">
+
+<h1>📱 <span class="name">Android Projects</span></h1>
+
+<p style="margin-top:20px;color:#bcbcc7;line-height:1.8;">
+Mobile application concepts and Android interface experiments.
+</p>
+
+<div class="result">
+Project Demo Coming Soon
+</div>
+
+</div>
+
+</div>
+</div>
+
+</body>
+</html>
