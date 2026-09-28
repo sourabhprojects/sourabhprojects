@@ -1,80 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Neon Tap Game | Sourabh Projects</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="page">
-<div class="container">
-<header class="topbar">
-  <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
-  <nav class="nav"><a class="" href="index.html">Home</a><a class="" href="projects.html">Projects</a><a class="" href="about.html">About</a></nav>
-</header>
-
-<main>
-<section class="tool-box card">
-  <h1>🎮 Neon <span class="gradient-text">Tap Game</span></h1>
-  <p class="lead">Tap the target as many times as you can before the 30-second timer ends.</p>
-  <div class="stats">
-    <div class="card stat"><strong id="score">0</strong><span>Score</span></div>
-    <div class="card stat"><strong id="time">30</strong><span>Seconds</span></div>
-    <div class="card stat"><strong id="streak">0</strong><span>Streak</span></div>
-  </div>
-  <div id="arena" style="position:relative;height:360px;margin-top:18px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(circle at 50% 50%,rgba(139,123,255,.14),transparent 46%),rgba(2,4,10,.88)">
-    <button id="target" aria-label="Tap target" style="position:absolute;width:72px;height:72px;border:none;border-radius:50%;display:none;cursor:pointer;background:linear-gradient(135deg,#8b7bff,#5ee7ff);box-shadow:0 0 36px rgba(94,231,255,.46);font-size:1.6rem">✦</button>
-    <div id="startOverlay" style="position:absolute;inset:0;display:grid;place-items:center;padding:20px;text-align:center">
-      <div><div style="font-size:3rem">🎯</div><h2>Ready?</h2><p class="prose">Tap Start, then hit the glowing target.</p><button class="btn" id="start" style="margin-top:14px">Start game</button></div>
-    </div>
-  </div>
-  <p class="notice" style="margin-top:14px">Best score is saved locally on this device.</p>
-  <div class="hero-actions"><button class="btn secondary" id="reset">Reset best</button></div>
-</section>
-</main>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Neon Rush | Sourabh Projects</title><link rel="stylesheet" href="style.css"><script src="app.js"></script>
+<style>#arena{height:430px;position:relative;overflow:hidden;background:radial-gradient(circle at center,rgba(139,92,255,.12),transparent 55%),#070a17;border:1px solid var(--line);border-radius:22px}.target{position:absolute;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fff 0 8%,var(--cyan) 9% 35%,var(--purple) 36% 65%,transparent 66%);cursor:pointer;filter:drop-shadow(0 0 20px rgba(88,230,255,.5))}</style></head>
+<body><div class="page"><div class="container"><div id="navMount"></div><main><section class="hero"><span class="eyebrow">🎮 Arcade</span><h1><span class="gradient-text">Neon Rush</span></h1><p class="subtitle">Tap the target before time runs out. Score and streak improve your level XP.</p></section><div class="card site-card"><div class="stats"><div class="stat"><strong id="score">0</strong><span>Score</span></div><div class="stat"><strong id="streak">0</strong><span>Streak</span></div><div class="stat"><strong id="time">30</strong><span>Seconds</span></div></div><div class="hero-actions"><button class="btn" id="start">Start Game</button></div><div id="arena"></div><div class="result" id="result">Press Start Game.</div></div></main><div id="foot"></div></div></div>
 <script>
-const target=document.getElementById('target'),arena=document.getElementById('arena'),scoreEl=document.getElementById('score'),timeEl=document.getElementById('time'),streakEl=document.getElementById('streak'),overlay=document.getElementById('startOverlay');
-let score=0,time=30,streak=0,timer=null;
-function move(){
- const size=72, pad=10, x=Math.random()*(arena.clientWidth-size-pad*2)+pad, y=Math.random()*(arena.clientHeight-size-pad*2)+pad;
- target.style.left=x+'px';target.style.top=y+'px';
-}
-function startGame(){
- clearInterval(timer);score=0;time=30;streak=0;scoreEl.textContent=0;timeEl.textContent=30;streakEl.textContent=0;
- overlay.style.display='none';target.style.display='block';move();
- timer=setInterval(()=>{time--;timeEl.textContent=time;if(time<=0)endGame()},1000);
-}
-function endGame(){
- clearInterval(timer);target.style.display='none';overlay.style.display='grid';
- const best=Number(localStorage.getItem('sourabh_best')||0);
- if(score>best)localStorage.setItem('sourabh_best',score);
- overlay.querySelector('h2').textContent='Time up!';
- overlay.querySelector('p').innerHTML=`Score: <strong>${score}</strong> • Best: <strong>${Math.max(score,best)}</strong>`;
- overlay.querySelector('button').textContent='Play again';
-}
-target.addEventListener('click',()=>{score++;streak++;scoreEl.textContent=score;streakEl.textContent=streak;move()});
-document.getElementById('start').addEventListener('click',startGame);
-document.getElementById('reset').addEventListener('click',()=>{localStorage.removeItem('sourabh_best');toast('Best score reset')});
-</script>
-<footer class="footer">Built with HTML, CSS & JavaScript • <a href="projects.html">Explore projects</a></footer>
-</div></div>
-<div class="toast" id="toast"></div>
-<script>
-document.addEventListener("click",e=>{
-  const b=e.target.closest(".btn,button");
-  if(!b)return;
-  const r=document.createElement("span"); r.className="ripple";
-  const rect=b.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
-  r.style.width=r.style.height=size+"px"; r.style.left=e.clientX-rect.left-size/2+"px"; r.style.top=e.clientY-rect.top-size/2+"px";
-  b.appendChild(r); setTimeout(()=>r.remove(),650);
-});
-function toast(msg){
-  const t=document.getElementById("toast"); if(!t)return;
-  t.textContent=msg; t.classList.add("show"); clearTimeout(window.__toast);
-  window.__toast=setTimeout(()=>t.classList.remove("show"),2200);
-}
-</script>
-</body>
-</html>
+bootNav("projects");let score=0,streak=0,time=30,timer=null,active=false;const arena=document.getElementById("arena");
+function spawn(){if(!active)return;arena.innerHTML="";const b=document.createElement("button");b.className="target";b.textContent="";b.style.left=Math.random()*82+"%";b.style.top=Math.random()*80+"%";b.onclick=()=>{score+=10+streak*2;streak++;document.getElementById("score").textContent=score;document.getElementById("streak").textContent=streak;addXP(5);awardGroupPoints(3);spawn()};arena.appendChild(b)}
+document.getElementById("start").onclick=()=>{clearInterval(timer);score=0;streak=0;time=30;active=true;document.getElementById("result").textContent="Go!";document.getElementById("score").textContent=0;document.getElementById("streak").textContent=0;document.getElementById("time").textContent=30;spawn();timer=setInterval(()=>{time--;document.getElementById("time").textContent=time;if(time<=0){clearInterval(timer);active=false;arena.innerHTML="";document.getElementById("result").textContent=`Game over — score ${score}.`;addXP(Math.floor(score/10));awardGroupPoints(Math.floor(score/20))}},1000)}
+document.getElementById("foot").innerHTML=footer();
+</script></body></html>

@@ -1,59 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Android Project Lab | Sourabh Projects</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="page">
-<div class="container">
-<header class="topbar">
-  <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
-  <nav class="nav"><a class="" href="index.html">Home</a><a class="" href="projects.html">Projects</a><a class="" href="about.html">About</a></nav>
-</header>
-
-<main>
-<section class="tool-box card">
-  <h1>📱 Android <span class="gradient-text">Project Lab</span></h1>
-  <p class="lead">A touch-friendly mini launcher that demonstrates the style of a simple Android utility hub.</p>
-  <div class="project-grid" id="apps">
-    <button class="card project interactive" data-app="notes" style="text-align:left"><div class="project-icon">📝</div><h3>Notes</h3><p>Save a quick note locally.</p></button>
-    <button class="card project interactive" data-app="timer" style="text-align:left"><div class="project-icon">⏱️</div><h3>Timer</h3><p>Start a 10-second mini timer.</p></button>
-    <button class="card project interactive" data-app="colors" style="text-align:left"><div class="project-icon">🎨</div><h3>Color Lab</h3><p>Generate a random color.</p></button>
-  </div>
-  <div class="result" id="appView">Tap an app above to open it.</div>
-</section>
-</main>
-<script>
-const view=document.getElementById('appView');let timer;
-document.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>{
- const a=b.dataset.app;
- if(a==='notes') view.innerHTML='<h2>📝 Quick Notes</h2><textarea id="note" class="textarea" placeholder="Type a note..."></textarea><button class="btn" style="margin-top:10px" id="saveNote">Save note</button>';
- if(a==='timer') {view.innerHTML='<h2>⏱️ Mini Timer</h2><div style="font-size:3rem;margin:10px 0" id="count">10</div><button class="btn" id="startTimer">Start</button>';document.getElementById('startTimer').onclick=()=>{clearInterval(timer);let n=10;document.getElementById('count').textContent=n;timer=setInterval(()=>{n--;document.getElementById('count').textContent=n;if(n<=0){clearInterval(timer);toast("Timer finished 🎉")}},1000)}}
- if(a==='colors') {const c='#'+Math.floor(Math.random()*0xffffff).toString(16).padStart(6,'0');view.innerHTML=`<h2>🎨 Random Color</h2><div style="height:130px;border-radius:18px;background:${c};margin:14px 0"></div><p><strong>${c}</strong></p><button class="btn" onclick="navigator.clipboard?.writeText('${c}');toast('Color copied')">Copy color</button>`}
- if(a==='notes'){const note=document.getElementById('note');note.value=localStorage.getItem('mini_note')||'';document.getElementById('saveNote').onclick=()=>{localStorage.setItem('mini_note',note.value);toast('Note saved')}}
-});
-</script>
-<footer class="footer">Built with HTML, CSS & JavaScript • <a href="projects.html">Explore projects</a></footer>
-</div></div>
-<div class="toast" id="toast"></div>
-<script>
-document.addEventListener("click",e=>{
-  const b=e.target.closest(".btn,button");
-  if(!b)return;
-  const r=document.createElement("span"); r.className="ripple";
-  const rect=b.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
-  r.style.width=r.style.height=size+"px"; r.style.left=e.clientX-rect.left-size/2+"px"; r.style.top=e.clientY-rect.top-size/2+"px";
-  b.appendChild(r); setTimeout(()=>r.remove(),650);
-});
-function toast(msg){
-  const t=document.getElementById("toast"); if(!t)return;
-  t.textContent=msg; t.classList.add("show"); clearTimeout(window.__toast);
-  window.__toast=setTimeout(()=>t.classList.remove("show"),2200);
-}
-</script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android Lab | Sourabh Projects</title><link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body><div class="page"><div class="container"><div id="navMount"></div><main><section class="hero"><span class="eyebrow">📱 Mobile UI</span><h1>Android <span class="gradient-text">Lab</span></h1></section><div class="project-grid">
+<div class="card site-card"><h2>📝 Notes</h2><textarea id="note" class="textarea" placeholder="Write a note..."></textarea><button class="btn" id="save">Save Note</button><div id="saved" class="notice">No saved note.</div></div>
+<div class="card site-card"><h2>⏱️ Timer</h2><div id="timer" style="font-size:3rem;text-align:center;margin:20px">30</div><button class="btn" id="start">Start 30s</button></div>
+<div class="card site-card"><h2>🎨 Color Lab</h2><input type="color" id="color" value="#8b5cff" style="width:100%;height:70px"><div id="swatch" style="height:100px;border-radius:18px;margin-top:12px"></div></div>
+</div></main><div id="foot"></div></div></div>
+<script>bootNav("projects");const n=document.getElementById("note"),saved=document.getElementById("saved");n.value=localStorage.getItem(APP+"_note")||"";saved.textContent=n.value?"Saved note loaded.":"No saved note.";save.onclick=()=>{localStorage.setItem(APP+"_note",n.value);saved.textContent="Saved on this browser."};let t=30,iv;start.onclick=()=>{clearInterval(iv);t=30;timer.textContent=t;iv=setInterval(()=>{timer.textContent=--t;if(t<=0)clearInterval(iv)},1000)};function paint(){swatch.style.background=color.value}color.oninput=paint;paint();document.getElementById("foot").innerHTML=footer()</script></body></html>

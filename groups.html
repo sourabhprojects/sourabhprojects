@@ -1,0 +1,61 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Groups | Sourabh Projects</title><link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body><div class="page"><div class="container"><div id="navMount"></div><main>
+<section class="hero" style="text-align:left;padding-top:10px"><span class="eyebrow">👥 Community system</span><h1><span class="gradient-text">Groups</span></h1><p class="subtitle" style="text-align:left;margin:8px 0">Join suggested groups or create your own. Request-only groups let the owner approve or reject players.</p></section>
+<div class="two"><section><div class="card site-card"><h2>Suggested Groups</h2><input class="input" id="search" placeholder="Search groups..." style="margin:12px 0"></div><div id="list" style="margin-top:12px"></div></section>
+<section><div class="card site-card"><h2>Create Group</h2><p class="subtitle" style="text-align:left;margin:7px 0">Creator requirement: Level 8+</p>
+<div class="field"><label>Group name</label><input class="input" id="gname" placeholder="e.g. Neon Coders 🚀"></div>
+<div class="field"><label>Minimum player level</label><select class="select" id="min"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></div>
+<div class="field"><label>Join mode</label><select class="select" id="mode"><option value="auto">Auto-join</option><option value="request">Request-only</option></select></div>
+<button class="btn" id="create">Create Group</button><div class="result" id="msg">Ready.</div></div>
+<div id="ownerBox" class="card site-card" style="margin-top:14px"></div></section></div>
+<section class="section"><div class="card site-card"><h2>🏆 Group Rank Points</h2><p class="lead" style="text-align:left;margin:7px 0">Different activities award different amounts. Neon Rush awards group points as well as player XP; calculator work awards player XP only. This prototype keeps the rules local until an online backend is added.</p></div></section>
+</main><div id="foot"></div></div></div>
+<script>
+bootNav("groups");
+const seed=[
+{id:"neon-coders",name:"Neon Coders 🚀",icon:"💻",min:10,mode:"auto",points:120,members:18,owner:"System",requests:[]},
+{id:"game-warriors",name:"Game Warriors 🎮",icon:"🎮",min:20,mode:"request",points:310,members:27,owner:"System",requests:[]},
+{id:"ai-lab",name:"AI Lab 🤖",icon:"🤖",min:30,mode:"request",points:540,members:42,owner:"System",requests:[]},
+{id:"creative-zone",name:"Creative Zone 🎨",icon:"🎨",min:10,mode:"auto",points:205,members:21,owner:"System",requests:[]}
+];
+function groups(){try{return JSON.parse(localStorage.getItem(APP+"_groups")||"null")||seed}catch{return seed}}
+function saveGroups(x){localStorage.setItem(APP+"_groups",JSON.stringify(x))}
+function render(){
+ const q=document.getElementById("search").value.toLowerCase(),u=user(),arr=groups().filter(g=>g.name.toLowerCase().includes(q));
+ document.getElementById("list").innerHTML=arr.map(g=>`<article class="card group-card" style="margin-bottom:10px"><div class="group-head"><div class="group-icon">${g.icon}</div><div class="group-info"><h3>${escapeHTML(g.name)}</h3><p>Min Level ${g.min} • ${g.mode==="auto"?"Auto-join":"Request-only"} • ${g.members} players</p></div></div><div class="chips"><span class="chip">🏆 ${g.points||0} group points</span><span class="chip">Owner: ${escapeHTML(g.owner)}</span></div><button class="btn ${u&&u.group===g.name?"secondary":""}" style="margin-top:12px" data-join="${g.id}">${u&&u.group===g.name?"Joined":"Join Group"}</button></article>`).join("")||`<div class="card site-card">No group found.</div>`;
+ document.querySelectorAll("[data-join]").forEach(b=>b.onclick=()=>{
+  if(!u){location.href="login.html";return}const g=groups().find(x=>x.id===b.dataset.join);
+  if(u.level<g.min){alert("Your level is too low for this group.");return}
+  if(g.mode==="request"){
+    g.requests??=[];
+    if(g.requests.some(r=>r.username===u.username)) return alert("Your request is already pending.");
+    g.requests.push({username:u.username,name:u.name,avatar:u.avatar,banner:u.banner});
+    saveGroups(groups()); addMail(u.username,"Group request sent 📩",`Your request to join ${g.name} is waiting for the owner.`); alert("Request sent to the group owner.");
+  } else {u.group=g.name;saveUser(u);addXP(20);awardGroupPoints(10);render()}
+ });
+ renderOwner();
+}
+function renderOwner(){
+ const u=user(),box=document.getElementById("ownerBox");if(!u){box.innerHTML="<h2>Group Requests</h2><p class='lead' style='text-align:left;margin:7px 0'>Log in to manage groups.</p>";return}
+ const gs=groups().filter(g=>g.owner===u.username),requests=gs.flatMap(g=>(g.requests||[]).map(r=>({g,r})));
+ box.innerHTML=`<h2>📥 Group Requests</h2><p class="subtitle" style="text-align:left;margin:7px 0">${requests.length} pending request(s)</p>${requests.length?requests.map(x=>`<div class="mail"><div class="avatar">${(AVATARS.find(a=>a.id===x.r.avatar)||AVATARS[0]).emoji}</div><div class="mail-body"><h3>${escapeHTML(x.r.name)}</h3><p>Wants to join <strong>${escapeHTML(x.g.name)}</strong> • Level requirement ${x.g.min}</p><div class="mail-actions"><button class="btn success" data-add="${x.g.id}|${escapeHTML(x.r.username)}">Add</button><button class="btn danger" data-reject="${x.g.id}|${escapeHTML(x.r.username)}">Reject</button></div></div></div>`).join(""):"<div class='notice'>No pending requests. When someone requests your request-only group, it will appear here.</div>"}`;
+ box.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>decision(b.dataset.add,true));
+ box.querySelectorAll("[data-reject]").forEach(b=>b.onclick=()=>decision(b.dataset.reject,false));
+}
+function decision(value,add){
+ const [gid,username]=value.split("|"),gs=groups(),g=gs.find(x=>x.id===gid);if(!g)return;
+ const req=(g.requests||[]).find(r=>r.username===username);g.requests=(g.requests||[]).filter(r=>r.username!==username);
+ if(req&&add){const target=ensureUser(username);if(target){target.group=g.name;saveUser(target);g.members=(g.members||0)+1;addMail(username,"Group request approved ✅",`You were added to ${g.name}.`)}}
+ if(req&&!add)addMail(username,"Group request rejected",`Your request to join ${g.name} was rejected by the owner.`);
+ saveGroups(gs);render();
+}
+document.getElementById("search").oninput=render;
+document.getElementById("create").onclick=()=>{
+ const u=user(),name=document.getElementById("gname").value.trim(),min=Number(document.getElementById("min").value),mode=document.getElementById("mode").value,msg=document.getElementById("msg");
+ if(!u)return msg.textContent="Create an account first.";
+ if(u.level<8)return msg.textContent="You need Level 8 to create a group.";
+ if(name.length<3)return msg.textContent="Enter a group name.";
+ const arr=groups();arr.push({id:"g"+Date.now(),name,icon:"👥",min,mode,points:0,members:1,owner:u.username,requests:[]});saveGroups(arr);u.group=name;saveUser(u);msg.textContent="Group created successfully.";render();
+};
+saveGroups(groups());render();document.getElementById("foot").innerHTML=footer();
+</script></body></html>

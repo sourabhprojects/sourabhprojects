@@ -1,77 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Weather Checker | Sourabh Projects</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="page">
-<div class="container">
-<header class="topbar">
-  <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
-  <nav class="nav"><a class="" href="index.html">Home</a><a class="" href="projects.html">Projects</a><a class="" href="profile.html">Profile</a><a class="" href="mailbox.html">Mailbox</a><a class="" href="about.html">About</a></nav>
-</header>
-
-<main>
-<section class="tool-box card">
-  <h1>🌦️ Weather <span class="gradient-text">Checker</span></h1>
-  <p class="lead">Search a city to load current conditions and a simple 7-day forecast.</p>
-  <div class="toolbar">
-    <input id="city" class="input" value="Indore" placeholder="Enter city name">
-    <button class="btn" id="search">Search</button>
-    <button class="btn secondary" id="locate">Use my location</button>
-  </div>
-  <div id="status" class="notice">Ready.</div>
-  <div id="weather"></div>
-</section>
-</main>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Weather | Sourabh Projects</title><link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body><div class="page"><div class="container"><div id="navMount"></div><main><section class="hero"><span class="eyebrow">🌦️ API Project</span><h1>Weather <span class="gradient-text">Checker</span></h1></section><div class="card tool-box"><div class="toolbar"><input id="city" class="input" value="Indore" placeholder="City"><button class="btn" id="search">Search</button></div><div id="status" class="notice">Ready.</div><div id="weather"></div></div></main><div id="foot"></div></div></div>
 <script>
-const city=document.getElementById('city'),status=document.getElementById('status'),weather=document.getElementById('weather');
-function codeText(c){const m={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Rain showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm + hail',99:'Thunderstorm + hail'};return m[c]||'Weather'}
-async function byCoords(lat,lon,name){
- status.textContent='Loading weather…';
- try{
-  const u=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=7&timezone=auto`;
-  const r=await fetch(u);if(!r.ok)throw new Error();const d=await r.json();
-  const days=d.daily.time.map((t,i)=>`<div class="card stat"><strong>${new Date(t).toLocaleDateString(undefined,{weekday:'short'})}</strong><span>${codeText(d.daily.weather_code[i])}</span><span>${Math.round(d.daily.temperature_2m_max[i])}° / ${Math.round(d.daily.temperature_2m_min[i])}°</span></div>`).join('');
-  weather.innerHTML=`<div class="card site-card" style="margin-top:14px"><h2>${name}</h2><p class="prose" style="margin-top:6px">${codeText(d.current.weather_code)}</p><div class="stats" style="margin-top:14px"><div class="stat"><strong>${Math.round(d.current.temperature_2m)}°C</strong><span>Temperature</span></div><div class="stat"><strong>${d.current.relative_humidity_2m}%</strong><span>Humidity</span></div><div class="stat"><strong>${Math.round(d.current.wind_speed_10m)} km/h</strong><span>Wind</span></div></div></div><div class="section"><div class="section-head"><h2>7-day forecast</h2></div><div class="stats">${days}</div></div>`;
-  status.textContent='Updated successfully.';
- }catch{status.textContent='Could not load weather right now.'}
-}
-async function searchCity(){
- const q=city.value.trim();if(!q)return;
- status.textContent='Finding city…';
- try{
-  const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1&language=en&format=json`);
-  const d=await r.json();if(!d.results?.length){status.textContent='City not found.';return}
-  const x=d.results[0]; await byCoords(x.latitude,x.longitude,`${x.name}${x.country?`, ${x.country}`:''}`);
- }catch{status.textContent='Could not find that city.'}
-}
-document.getElementById('search').onclick=searchCity;
-city.addEventListener('keydown',e=>{if(e.key==='Enter')searchCity()});
-document.getElementById('locate').onclick=()=>navigator.geolocation?.getCurrentPosition(p=>byCoords(p.coords.latitude,p.coords.longitude,'Your location'),()=>toast('Location permission was not granted'));
-searchCity();
-</script>
-<footer class="footer">Built with HTML, CSS & JavaScript • <a href="projects.html">Explore projects</a></footer>
-</div></div>
-<div class="toast" id="toast"></div>
-<script>
-document.addEventListener("click",e=>{
-  const b=e.target.closest(".btn,button");
-  if(!b)return;
-  const r=document.createElement("span"); r.className="ripple";
-  const rect=b.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
-  r.style.width=r.style.height=size+"px"; r.style.left=e.clientX-rect.left-size/2+"px"; r.style.top=e.clientY-rect.top-size/2+"px";
-  b.appendChild(r); setTimeout(()=>r.remove(),650);
-});
-function toast(msg){
-  const t=document.getElementById("toast"); if(!t)return;
-  t.textContent=msg; t.classList.add("show"); clearTimeout(window.__toast);
-  window.__toast=setTimeout(()=>t.classList.remove("show"),2200);
-}
-</script>
-</body>
-</html>
+bootNav("projects");const city=document.getElementById("city"),status=document.getElementById("status"),weather=document.getElementById("weather");
+function text(c){return ({0:"Clear sky",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",51:"Drizzle",61:"Rain",63:"Rain",65:"Heavy rain",80:"Rain showers",95:"Thunderstorm"})[c]||"Weather"}
+async function go(){const q=city.value.trim();if(!q)return;status.textContent="Loading...";try{const g=await fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(q)+"&count=1&format=json").then(r=>r.json());if(!g.results?.length)throw 0;const x=g.results[0];const d=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${x.latitude}&longitude=${x.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`).then(r=>r.json());weather.innerHTML=`<div class="card site-card"><h2>${x.name}, ${x.country||""}</h2><p class="lead" style="margin:7px 0;text-align:left">${text(d.current.weather_code)}</p><div class="stats"><div class="stat"><strong>${Math.round(d.current.temperature_2m)}°C</strong><span>Temperature</span></div><div class="stat"><strong>${d.current.relative_humidity_2m}%</strong><span>Humidity</span></div><div class="stat"><strong>${Math.round(d.current.wind_speed_10m)} km/h</strong><span>Wind</span></div></div></div>`;status.textContent="Updated successfully.";addXP(1)}catch{status.textContent="Could not load weather right now."}}
+document.getElementById("search").onclick=go;city.onkeydown=e=>{if(e.key==="Enter")go()};go();document.getElementById("foot").innerHTML=footer();
+</script></body></html>

@@ -1,72 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Advanced Calculator | Saurabh Projects</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="page">
-<div class="container">
-<header class="topbar">
-  <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
-  <nav class="nav"><a class="" href="index.html">Home</a><a class="" href="projects.html">Projects</a><a class="" href="about.html">About</a></nav>
-</header>
-
-<main>
-<section class="tool-box card">
-  <h1>🧮 Advanced <span class="gradient-text">Calculator</span></h1>
-  <p class="lead">Use buttons, your keyboard, or type an expression directly.</p>
-  <input id="display" class="input" style="font-size:1.45rem;text-align:right" readonly>
-  <div class="project-grid" style="grid-template-columns:repeat(4,1fr);margin-top:12px">
-    <button class="btn secondary" onclick="clearDisplay()">C</button><button class="btn secondary" onclick="add('(')">(</button><button class="btn secondary" onclick="add(')')">)</button><button class="btn" onclick="add('/')">÷</button>
-    <button class="btn secondary" onclick="add('7')">7</button><button class="btn secondary" onclick="add('8')">8</button><button class="btn secondary" onclick="add('9')">9</button><button class="btn" onclick="add('*')">×</button>
-    <button class="btn secondary" onclick="add('4')">4</button><button class="btn secondary" onclick="add('5')">5</button><button class="btn secondary" onclick="add('6')">6</button><button class="btn" onclick="add('-')">−</button>
-    <button class="btn secondary" onclick="add('1')">1</button><button class="btn secondary" onclick="add('2')">2</button><button class="btn secondary" onclick="add('3')">3</button><button class="btn" onclick="add('+')">+</button>
-    <button class="btn secondary" onclick="add('0')">0</button><button class="btn secondary" onclick="add('.')">.</button><button class="btn success" onclick="calculate()">=</button><button class="btn secondary" onclick="backspace()">⌫</button>
-  </div>
-  <div class="notice" style="margin-top:14px">Tip: keyboard numbers and <strong>Enter</strong> work too.</div>
-</section>
-</main>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Calculator | Sourabh Projects</title><link rel="stylesheet" href="style.css"><script src="app.js"></script>
+<style>.calc{max-width:620px;margin:auto}.display{font-size:2rem;text-align:right;min-height:78px;display:flex;align-items:end;justify-content:flex-end;overflow:auto;padding:16px}.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}.key{min-height:58px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.045);color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer}.key.op{background:rgba(139,92,255,.16)}.key.eq{background:linear-gradient(135deg,var(--purple),var(--cyan))}</style></head>
+<body><div class="page"><div class="container"><div id="navMount"></div><main><section class="hero"><span class="eyebrow">🧮 Utility</span><h1><span class="gradient-text">Advanced Calculator</span></h1></section><div class="card site-card calc"><div id="display" class="display">0</div><div class="keys">
+<button class="key" data-v="(">(</button><button class="key" data-v=")">)</button><button class="key" data-v="π">π</button><button class="key op" data-action="clear">AC</button>
+<button class="key" data-v="7">7</button><button class="key" data-v="8">8</button><button class="key" data-v="9">9</button><button class="key op" data-v="/">÷</button>
+<button class="key" data-v="4">4</button><button class="key" data-v="5">5</button><button class="key" data-v="6">6</button><button class="key op" data-v="*">×</button>
+<button class="key" data-v="1">1</button><button class="key" data-v="2">2</button><button class="key" data-v="3">3</button><button class="key op" data-v="-">−</button>
+<button class="key" data-v="0">0</button><button class="key" data-v=".">.</button><button class="key" data-v="+">+</button><button class="key eq" data-action="equals">=</button>
+</div><div class="toolbar"><button class="btn secondary" id="back">⌫ Backspace</button><button class="btn secondary" id="sqrt">√</button><button class="btn secondary" id="fact">x!</button></div></div></main><div id="foot"></div></div></div>
 <script>
-const d=document.getElementById('display');
-function add(v){d.value+=v}
-function clearDisplay(){d.value=''}
-function backspace(){d.value=d.value.slice(0,-1)}
-function calculate(){
-  try{
-    const expr=d.value.replace(/×/g,'*').replace(/÷/g,'/');
-    if(!expr.trim())return;
-    if(!/^[0-9+\\-*/().\\s]+$/.test(expr)) throw new Error();
-    const result=Function('"use strict";return ('+expr+')')();
-    if(!Number.isFinite(result)) throw new Error();
-    d.value=String(result);
-  }catch{d.value='Error';toast('Invalid expression')}
-}
-document.addEventListener('keydown',e=>{
-  if((e.key>='0'&&e.key<='9')||'+-*/().'.includes(e.key))add(e.key);
-  else if(e.key==='Enter')calculate(); else if(e.key==='Backspace')backspace(); else if(e.key==='Escape')clearDisplay();
-});
-</script>
-<footer class="footer">Built with HTML, CSS & JavaScript • <a href="projects.html">Explore projects</a></footer>
-</div></div>
-<div class="toast" id="toast"></div>
-<script>
-document.addEventListener("click",e=>{
-  const b=e.target.closest(".btn,button");
-  if(!b)return;
-  const r=document.createElement("span"); r.className="ripple";
-  const rect=b.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
-  r.style.width=r.style.height=size+"px"; r.style.left=e.clientX-rect.left-size/2+"px"; r.style.top=e.clientY-rect.top-size/2+"px";
-  b.appendChild(r); setTimeout(()=>r.remove(),650);
-});
-function toast(msg){
-  const t=document.getElementById("toast"); if(!t)return;
-  t.textContent=msg; t.classList.add("show"); clearTimeout(window.__toast);
-  window.__toast=setTimeout(()=>t.classList.remove("show"),2200);
-}
-</script>
-</body>
-</html>
+bootNav("projects");let expr="",fresh=true;const d=document.getElementById("display");
+function show(){d.textContent=expr||"0"}function add(v){if(fresh){expr="";fresh=false}expr+=v;show()}
+function calc(){try{let x=expr.replaceAll("π","Math.PI");if(!/^[0-9+\-*/(). MathPI]+$/.test(x))throw 0;expr=String(Function("return "+x)());fresh=true;show();addXP(2)}catch{d.textContent="Error";expr="";fresh=true}}
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>add(b.dataset.v));document.querySelector("[data-action=clear]").onclick=()=>{expr="";fresh=true;show()};document.querySelector("[data-action=equals]").onclick=calc;
+document.getElementById("back").onclick=()=>{expr=expr.slice(0,-1);show()};document.getElementById("sqrt").onclick=()=>{try{expr=String(Math.sqrt(Number(expr)));fresh=true;show();addXP(2)}catch{d.textContent="Error"}};document.getElementById("fact").onclick=()=>{let n=Number(expr);if(!Number.isInteger(n)||n<0||n>170)return d.textContent="Invalid";let f=1;for(let i=2;i<=n;i++)f*=i;expr=String(f);fresh=true;show()};
+document.addEventListener("keydown",e=>{if(/[0-9+\-*/().]/.test(e.key))add(e.key);else if(e.key==="Enter")calc();else if(e.key==="Backspace"){expr=expr.slice(0,-1);show()}});
+document.getElementById("foot").innerHTML=footer();show();
+</script></body></html>

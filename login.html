@@ -1,80 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Protected Login System | Sourabh Projects</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="page">
-<div class="container">
-<header class="topbar">
-  <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
-  <nav class="nav"><a class="" href="index.html">Home</a><a class="" href="projects.html">Projects</a><a class="" href="profile.html">Profile</a><a class="" href="mailbox.html">Mailbox</a><a class="" href="about.html">About</a></nav>
-</header>
-
-<main>
-<section class="tool-box card">
-  <h1>🔐 Protected <span class="gradient-text">Login Demo</span></h1>
-  <p class="lead">A frontend authentication concept. Accounts are stored only in your browser using localStorage.</p>
-  <div id="app">
-    <div class="row">
-      <div class="card site-card"><h2>Create account</h2>
-        <div class="field"><label>Username</label><input id="su" class="input" placeholder="yourname"></div>
-        <div class="field"><label>Password</label><input id="sp" class="input" type="password" placeholder="••••••••"></div><div class="field"><label>Confirm password</label><input id="scp" class="input" type="password" placeholder="••••••••"></div>
-        <button class="btn success" id="signup">Sign up</button>
-      </div>
-      <div class="card site-card"><h2>Login</h2>
-        <div class="field"><label>Username</label><input id="lu" class="input"></div>
-        <div class="field"><label>Password</label><input id="lp" class="input" type="password"></div>
-        <button class="btn" id="loginBtn">Login</button>
-      </div>
-    </div>
-  </div>
-  <div class="result" id="status">No active session.</div>
-  <div class="notice" style="margin-top:14px"><strong>Important:</strong> this is only a demonstration. Do not use real passwords; a real login system needs a secure backend and password hashing.</div>
-</section>
-</main>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login | Sourabh Projects</title><link rel="icon" href="logo.svg"><link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body><div class="page"><div class="container"><div id="navMount"></div>
+<main><section class="hero"><span class="eyebrow">🔐 Secure-style account experience</span><h1>Welcome to <span class="gradient-text">Sourabh Projects</span></h1><p class="subtitle">Create your profile, level up, join groups and use your personal mailbox.</p></section>
+<section class="row">
+<div class="card site-card"><h2>Create account</h2>
+<div class="field"><label>Username</label><input class="input" id="su" autocomplete="username" placeholder="Choose a username"></div>
+<div class="field"><label>Password</label><input class="input" id="sp" type="password" placeholder="Create password"></div>
+<div class="field"><label>Confirm password</label><input class="input" id="scp" type="password" placeholder="Repeat password"></div>
+<button class="btn success" id="signup">Create Account</button>
+</div>
+<div class="card site-card"><h2>Login</h2>
+<div class="field"><label>Username</label><input class="input" id="lu" autocomplete="username" placeholder="Your username"></div>
+<div class="field"><label>Password</label><input class="input" id="lp" type="password" autocomplete="current-password" placeholder="Your password"></div>
+<button class="btn" id="loginBtn">Login</button>
+<button class="btn secondary" id="logoutBtn" style="margin-top:8px">Log out</button>
+</div></section>
+<div class="result" id="status">No active session.</div>
+<div class="notice">Offline version: account data is stored in this browser only. It is not a real shared online account system. Do not use a real password.</div>
+</main><div id="foot"></div></div></div>
 <script>
-const status=document.getElementById('status');
-function users(){try{return JSON.parse(localStorage.getItem('demo_users')||'{}')}catch{return {}}}
-function setStatus(t,ok=false){status.textContent=t;status.style.borderColor=ok?'rgba(112,240,168,.4)':''}
-function refresh(){
- const s=localStorage.getItem('demo_session'); setStatus(s?'Logged in as '+s+'.':'No active session.',!!s);
- if(s && !document.getElementById('logout')){const b=document.createElement('button');b.id='logout';b.className='btn danger';b.textContent='Log out';b.onclick=()=>{localStorage.removeItem('demo_session');location.reload()};status.parentElement.appendChild(b)}
-}
-document.getElementById('signup').onclick=()=>{
- const u=document.getElementById('su').value.trim(),p=document.getElementById('sp').value;
- const cp=document.getElementById('scp').value;if(u.length<3||p.length<4)return setStatus('Username needs 3+ characters and password needs 4+ characters.');if(p!==cp)return setStatus('Passwords do not match.');
- const data=users();if(data[u])return setStatus('That username already exists.');
- data[u]=p;localStorage.setItem('demo_users',JSON.stringify(data));const inbox=JSON.parse(localStorage.getItem('sp_mailbox_v1')||'{}');inbox[u]=[{id:'welcome-'+Date.now(),sender:'Sourabh Projects System',title:'Welcome to your new account',body:'Your mailbox is ready. Check back here for system messages and future rewards.',icon:'📬',time:new Date().toISOString(),read:false}];localStorage.setItem('sp_mailbox_v1',JSON.stringify(inbox));setStatus('Account created. You can log in now.',true);
+bootNav("login");
+function status(t,ok=false){const e=document.getElementById("status");e.textContent=t;e.style.borderColor=ok?"rgba(99,243,173,.45)":""}
+document.getElementById("signup").onclick=()=>{
+ const u=document.getElementById("su").value.trim(),p=document.getElementById("sp").value,cp=document.getElementById("scp").value;
+ if(u.length<3)return status("Username must be at least 3 characters.");
+ if(p.length<4)return status("Password must be at least 4 characters.");
+ if(p!==cp)return status("Passwords do not match.");
+ const users=getUsers();if(users[u])return status("That username already exists. Please log in.");
+ users[u]={username:u,password:p,name:u,xp:0,level:1,group:"No Group",avatar:"default",banner:"default",mails:[]};
+ saveUsers(users);setSession(u);addMail(u,"Welcome to Sourabh Projects 🎉","Your account is ready. Explore your profile, projects, groups and mailbox.");location.href="index.html";
 };
-document.getElementById('loginBtn').onclick=()=>{
- const u=document.getElementById('lu').value.trim(),p=document.getElementById('lp').value,data=users();
- if(data[u]!==p)return setStatus('Invalid username or password.');
- localStorage.setItem('demo_session',u);refresh();
+document.getElementById("loginBtn").onclick=()=>{
+ const u=document.getElementById("lu").value.trim(),p=document.getElementById("lp").value,users=getUsers();
+ if(!users[u])return status("Account not found — create account first.");
+ if(users[u].password && users[u].password!==p)return status("Invalid username or password.");
+ if(!users[u].password){ /* first-generation local demo accounts cannot be securely migrated */ return status("This account belongs to an older demo. Create a new account in this version.");}
+ setSession(u);location.href="index.html";
 };
-refresh();
-</script>
-<footer class="footer">Built with HTML, CSS & JavaScript • <a href="projects.html">Explore projects</a></footer>
-</div></div>
-<div class="toast" id="toast"></div>
-<script>
-document.addEventListener("click",e=>{
-  const b=e.target.closest(".btn,button");
-  if(!b)return;
-  const r=document.createElement("span"); r.className="ripple";
-  const rect=b.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
-  r.style.width=r.style.height=size+"px"; r.style.left=e.clientX-rect.left-size/2+"px"; r.style.top=e.clientY-rect.top-size/2+"px";
-  b.appendChild(r); setTimeout(()=>r.remove(),650);
-});
-function toast(msg){
-  const t=document.getElementById("toast"); if(!t)return;
-  t.textContent=msg; t.classList.add("show"); clearTimeout(window.__toast);
-  window.__toast=setTimeout(()=>t.classList.remove("show"),2200);
-}
-</script>
-</body>
-</html>
+document.getElementById("logoutBtn").onclick=()=>{localStorage.removeItem(APP+"_session");status("Logged out.")};
+document.getElementById("foot").innerHTML=footer();
+</script></body></html>

@@ -1,71 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Saurabh Mehra | Projects</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="page">
-<div class="container">
-<header class="topbar">
-  <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
-  <nav class="nav"><a class="" href="index.html">Home</a><a class="active" href="projects.html">Projects</a><a class="" href="about.html">About</a></nav>
-</header>
-
-<main>
-<section class="hero" style="padding-bottom:10px">
-  <span class="eyebrow">🧪 Interactive project lab</span>
-  <h1 style="margin-top:18px">My <span class="gradient-text">Projects</span></h1>
-  <p class="subtitle">Open any project and test the demo in your browser.</p>
-</section>
-<div class="toolbar">
-  <input class="input" id="search" placeholder="Search projects…">
-  <button class="btn secondary" id="allBtn">Show all</button>
-</div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Projects | Sourabh Projects</title><link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body><div class="page"><div class="container"><div id="navMount"></div><main>
+<section class="hero" style="padding-top:12px"><span class="eyebrow">🧪 Interactive Project Lab</span><h1>My <span class="gradient-text">Projects</span></h1><p class="subtitle">A larger collection of browser projects.</p></section>
+<div class="toolbar"><input class="input" id="search" placeholder="Search projects..."><button class="btn secondary" id="all">Show all</button></div>
 <div class="project-grid" id="grid">
-  <article class="card project" data-name="qr code generator"><div class="project-icon">🔳</div><h3>QR Code Generator</h3><p>Create a scannable QR code from a URL or any text.</p><div class="project-meta"><span class="tag">Utility</span></div><a class="btn" href="qr.html">Open Project</a></article>
-  <article class="card project" data-name="advanced calculator"><div class="project-icon">🧮</div><h3>Advanced Calculator</h3><p>Expression-based browser calculator with keyboard support.</p><div class="project-meta"><span class="tag">JavaScript</span></div><a class="btn" href="calculator.html">Open Project</a></article>
-  <article class="card project" data-name="game development neon tap game"><div class="project-icon">🎮</div><h3>Neon Tap Game</h3><p>30-second arcade challenge with score, streak and speed.</p><div class="project-meta"><span class="tag">Game</span></div><a class="btn" href="game.html">Play Now</a></article>
-  <article class="card project" data-name="protected login system"><div class="project-icon">🔐</div><h3>Protected Login System</h3><p>Frontend authentication demo with account creation and session state.</p><div class="project-meta"><span class="tag">Security concept</span></div><a class="btn" href="login.html">Try Demo</a></article>
-  <article class="card project" data-name="weather checking system"><div class="project-icon">🌦️</div><h3>Weather Checking System</h3><p>Search a location and load current weather and forecast data.</p><div class="project-meta"><span class="tag">API</span></div><a class="btn" href="weather.html">Check Weather</a></article>
-  <article class="card project" data-name="jarvis ai assistant"><div class="project-icon">🤖</div><h3>Jarvis AI Assistant</h3><p>Voice-enabled browser assistant for simple commands and utilities.</p><div class="project-meta"><span class="tag">Speech API</span></div><a class="btn" href="jarvis.html">Launch Jarvis</a></article>
-  <article class="card project" data-name="personal ai chat"><div class="project-icon">💬</div><h3>Personal AI Chat</h3><p>Local AI-style chat demo with quick prompts and typing animation.</p><div class="project-meta"><span class="tag">Chat UI</span></div><a class="btn" href="chat.html">Chat</a></article>
-  <article class="card project" data-name="android projects mini launcher"><div class="project-icon">📱</div><h3>Android Project Lab</h3><p>Mini launcher demo with Notes, Timer and Color Lab utilities.</p><div class="project-meta"><span class="tag">Mobile UI</span></div><a class="btn" href="android.html">Open Lab</a></article>
-  <article class="card project" data-name="web development"><div class="project-icon">🌐</div><h3>Web Development Lab</h3><p>Live playground for HTML, CSS and JavaScript snippets.</p><div class="project-meta"><span class="tag">Frontend</span></div><a class="btn" href="webdev.html">Open Playground</a></article>
-  <article class="card project" data-name="creative digital projects gradient studio"><div class="project-icon">🎨</div><h3>Creative Digital Studio</h3><p>Make animated gradients, random palettes and copy CSS effects.</p><div class="project-meta"><span class="tag">Creative</span></div><a class="btn" href="creative.html">Open Studio</a></article>
-</div>
-<p class="notice" id="empty" style="display:none;margin-top:18px">No project matched your search.</p>
-</main>
+<article class="card project" data-name="calculator"><div class="project-icon">🧮</div><h3>Advanced Calculator</h3><p>Scientific-style calculator with working visible input.</p><span class="tag">Utility</span><a class="btn" href="calculator.html">Open</a></article>
+<article class="card project" data-name="neon rush game"><div class="project-icon">🎮</div><h3>Neon Rush</h3><p>Arcade tapping game with score, streaks, levels and XP.</p><span class="tag">Game</span><a class="btn" href="game.html">Play</a></article>
+<article class="card project" data-name="mailbox"><div class="project-icon">📬</div><h3>Personal Mailbox</h3><p>Unread filters, mark read and delete.</p><span class="tag">Account</span><a class="btn" href="mailbox.html">Open</a></article>
+<article class="card project" data-name="profile"><div class="project-icon">🧑‍🚀</div><h3>Player Profile</h3><p>Level, XP, avatars, banners and group.</p><span class="tag">Profile</span><a class="btn" href="profile.html">Open</a></article>
+<article class="card project" data-name="groups"><div class="project-icon">👥</div><h3>Group System</h3><p>Join/create groups with level requirements and join modes.</p><span class="tag">Community</span><a class="btn" href="groups.html">Open</a></article>
+<article class="card project" data-name="qr"><div class="project-icon">🔳</div><h3>QR Generator</h3><p>Create a QR code from text or a URL.</p><span class="tag">Utility</span><a class="btn" href="qr.html">Open</a></article>
+<article class="card project" data-name="weather"><div class="project-icon">🌦️</div><h3>Weather Checker</h3><p>Search a city and see current conditions and forecast.</p><span class="tag">API</span><a class="btn" href="weather.html">Open</a></article>
+<article class="card project" data-name="jarvis"><div class="project-icon">🤖</div><h3>JARVIS</h3><p>Browser voice assistant demo.</p><span class="tag">Speech</span><a class="btn" href="jarvis.html">Open</a></article>
+<article class="card project" data-name="ai chat"><div class="project-icon">💬</div><h3>Personal AI Chat</h3><p>Local AI-style chat interface.</p><span class="tag">Chat</span><a class="btn" href="chat.html">Open</a></article>
+<article class="card project" data-name="android lab"><div class="project-icon">📱</div><h3>Android Lab</h3><p>Mini notes, timer and color utilities.</p><span class="tag">Mobile</span><a class="btn" href="android.html">Open</a></article>
+<article class="card project" data-name="web development"><div class="project-icon">🌐</div><h3>Web Development Lab</h3><p>Live HTML/CSS playground.</p><span class="tag">Frontend</span><a class="btn" href="webdev.html">Open</a></article>
+<article class="card project" data-name="creative studio"><div class="project-icon">🎨</div><h3>Creative Digital Studio</h3><p>Animated gradient and palette tools.</p><span class="tag">Creative</span><a class="btn" href="creative.html">Open</a></article>
+<article class="card project" data-name="about"><div class="project-icon">👤</div><h3>About Saurabh</h3><p>Profile and project information.</p><span class="tag">Info</span><a class="btn" href="about.html">Open</a></article>
+</div><div id="empty" class="notice hidden">No project matched your search.</div>
+</main><div id="foot"></div></div></div>
 <script>
-const input=document.getElementById('search'), cards=[...document.querySelectorAll('.project')], empty=document.getElementById('empty');
-function filter(){
-  const q=input.value.trim().toLowerCase(); let n=0;
-  cards.forEach(c=>{const ok=!q||c.dataset.name.includes(q);c.style.display=ok?'block':'none';if(ok)n++});
-  empty.style.display=n?'none':'block';
-}
-input.addEventListener('input',filter);
-document.getElementById('allBtn').addEventListener('click',()=>{input.value='';filter();input.focus()});
-</script>
-<footer class="footer">Built with HTML, CSS & JavaScript • <a href="projects.html">Explore projects</a></footer>
-</div></div>
-<div class="toast" id="toast"></div>
-<script>
-document.addEventListener("click",e=>{
-  const b=e.target.closest(".btn,button");
-  if(!b)return;
-  const r=document.createElement("span"); r.className="ripple";
-  const rect=b.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
-  r.style.width=r.style.height=size+"px"; r.style.left=e.clientX-rect.left-size/2+"px"; r.style.top=e.clientY-rect.top-size/2+"px";
-  b.appendChild(r); setTimeout(()=>r.remove(),650);
-});
-function toast(msg){
-  const t=document.getElementById("toast"); if(!t)return;
-  t.textContent=msg; t.classList.add("show"); clearTimeout(window.__toast);
-  window.__toast=setTimeout(()=>t.classList.remove("show"),2200);
-}
-</script>
-</body>
-</html>
+bootNav("projects");const input=document.getElementById("search"),cards=[...document.querySelectorAll(".project")],empty=document.getElementById("empty");
+function filter(){const q=input.value.toLowerCase();let n=0;cards.forEach(c=>{const ok=!q||c.dataset.name.includes(q);c.style.display=ok?"flex":"none";if(ok)n++});empty.classList.toggle("hidden",!!n)}
+input.oninput=filter;document.getElementById("all").onclick=()=>{input.value="";filter()};document.getElementById("foot").innerHTML=footer();
+</script></body></html>
