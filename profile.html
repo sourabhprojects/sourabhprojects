@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Profile | Sourabh Projects</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.svg"><link rel="stylesheet" href="style.css">
+</head>
+<body><div class="page"><div class="container">
+<header class="topbar"><a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a><nav class="nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a class="active" href="profile.html">Profile</a></nav></header>
+<main class="profile-shell">
+<section class="profile-banner" aria-label="Profile banner"></section>
+<section class="profile-user">
+  <div class="avatar" id="avatar">👤</div>
+  <div class="profile-name"><h1 id="username">Guest</h1><p id="levelText">Level 1 • Beginner</p></div>
+</section>
+<section class="profile-grid">
+  <div class="card profile-stat"><div class="eyebrow">🎮 Player profile</div><h2 style="margin-top:12px">Account Overview</h2><p class="prose" style="margin-top:8px">Your profile is ready for future XP, levels, groups, avatars and banner unlocks.</p><div class="hero-actions" style="justify-content:flex-start"><a class="btn" href="mailbox.html">✉️ Open Mailbox <span class="mail-count" id="mailCount">0</span></a><a class="btn secondary" href="projects.html">🎮 Projects</a></div></div>
+  <div class="card profile-stat"><div class="eyebrow">🏆 Progress</div><h2 style="margin-top:12px">Level 1</h2><p class="prose" style="margin-top:8px">More profile cosmetics can be unlocked as the level system is expanded.</p><div style="height:12px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:18px"><div style="height:100%;width:8%;background:linear-gradient(90deg,var(--primary),var(--primary-2));border-radius:99px"></div></div><small style="display:block;color:var(--muted);margin-top:8px">8% progress to Level 2</small></div>
+</section>
+<section class="section"><div class="card site-card"><h2>🎨 Cosmetic Unlocks</h2><p class="prose" style="margin-top:8px">New avatars and banners will be added here with level requirements. Locked items stay unavailable until their required level is reached.</p><div class="project-grid" style="margin-top:16px"><div class="card project"><div class="project-icon">👤</div><h3>Starter Avatar</h3><p>Default avatar available to every account.</p><span class="tag">Unlocked • Level 1</span></div><div class="card project"><div class="project-icon">🌌</div><h3>Neon Banner</h3><p>Future profile banner reward.</p><span class="tag">Unlocks at Level 5</span></div><div class="card project"><div class="project-icon">⚡</div><h3>Elite Avatar</h3><p>Future avatar reward for higher levels.</p><span class="tag">Unlocks at Level 10</span></div></div></div></section>
+</main>
+<footer class="footer">Profile • Sourabh Projects • <a href="index.html">Home</a></footer>
+</div></div>
+<script>
+const u=localStorage.getItem('demo_session');document.getElementById('username').textContent=u||'Guest';document.getElementById('levelText').textContent=u?'Level 1 • Beginner':'Login to view your account';
+try{const m=JSON.parse(localStorage.getItem('sp_mailbox_v1')||'{}');document.getElementById('mailCount').textContent=(m[u]||[]).filter(x=>!x.read).length}catch{}
+</script></body></html>

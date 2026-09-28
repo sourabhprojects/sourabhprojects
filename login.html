@@ -12,7 +12,7 @@
 <div class="container">
 <header class="topbar">
   <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
-  <nav class="nav"><a class="" href="index.html">Home</a><a class="" href="projects.html">Projects</a><a class="" href="about.html">About</a></nav>
+  <nav class="nav"><a class="" href="index.html">Home</a><a class="" href="projects.html">Projects</a><a class="" href="profile.html">Profile</a><a class="" href="mailbox.html">Mailbox</a><a class="" href="about.html">About</a></nav>
 </header>
 
 <main>
@@ -23,7 +23,7 @@
     <div class="row">
       <div class="card site-card"><h2>Create account</h2>
         <div class="field"><label>Username</label><input id="su" class="input" placeholder="yourname"></div>
-        <div class="field"><label>Password</label><input id="sp" class="input" type="password" placeholder="••••••••"></div>
+        <div class="field"><label>Password</label><input id="sp" class="input" type="password" placeholder="••••••••"></div><div class="field"><label>Confirm password</label><input id="scp" class="input" type="password" placeholder="••••••••"></div>
         <button class="btn success" id="signup">Sign up</button>
       </div>
       <div class="card site-card"><h2>Login</h2>
@@ -47,9 +47,9 @@ function refresh(){
 }
 document.getElementById('signup').onclick=()=>{
  const u=document.getElementById('su').value.trim(),p=document.getElementById('sp').value;
- if(u.length<3||p.length<4)return setStatus('Username needs 3+ characters and password needs 4+ characters.');
+ const cp=document.getElementById('scp').value;if(u.length<3||p.length<4)return setStatus('Username needs 3+ characters and password needs 4+ characters.');if(p!==cp)return setStatus('Passwords do not match.');
  const data=users();if(data[u])return setStatus('That username already exists.');
- data[u]=p;localStorage.setItem('demo_users',JSON.stringify(data));setStatus('Account created. You can log in now.',true);
+ data[u]=p;localStorage.setItem('demo_users',JSON.stringify(data));const inbox=JSON.parse(localStorage.getItem('sp_mailbox_v1')||'{}');inbox[u]=[{id:'welcome-'+Date.now(),sender:'Sourabh Projects System',title:'Welcome to your new account',body:'Your mailbox is ready. Check back here for system messages and future rewards.',icon:'📬',time:new Date().toISOString(),read:false}];localStorage.setItem('sp_mailbox_v1',JSON.stringify(inbox));setStatus('Account created. You can log in now.',true);
 };
 document.getElementById('loginBtn').onclick=()=>{
  const u=document.getElementById('lu').value.trim(),p=document.getElementById('lp').value,data=users();

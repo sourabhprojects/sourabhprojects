@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Mailbox | Sourabh Projects</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page"><div class="container">
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="logo.svg" alt="SM logo"><span>Sourabh Projects</span></a>
+  <nav class="nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="profile.html">Profile</a></nav>
+</header>
+<main>
+<section class="tool-box card">
+  <div class="mailbox-head">
+    <div><div class="eyebrow">✉️ Personal inbox</div><h1 style="margin-top:14px">My <span class="gradient-text">Mailbox</span></h1><p class="subtitle" style="margin-left:0">System messages, rewards and important updates for your account.</p></div>
+    <button class="btn secondary" id="markAll">✓ Mark all read</button>
+  </div>
+  <div id="accountNotice" class="notice" style="margin-bottom:16px"></div>
+  <div class="mail-tabs">
+    <button class="btn mail-tab active" data-filter="all">All <span class="mail-count" id="allCount">0</span></button>
+    <button class="btn secondary mail-tab" data-filter="unread">Unread <span class="mail-count" id="unreadCount">0</span></button>
+  </div>
+  <div id="mailList" class="mail-list"></div>
+</section>
+</main>
+<footer class="footer">Mailbox • Local account edition • <a href="profile.html">Open profile</a></footer>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+const SESSION='demo_session', MAILBOX='sp_mailbox_v1';
+const list=document.getElementById('mailList'), notice=document.getElementById('accountNotice');
+let filter='all';
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),2200)}
+function getUser(){return localStorage.getItem(SESSION)||''}
+function store(){try{return JSON.parse(localStorage.getItem(MAILBOX)||'{}')}catch{return {}}}
+function save(x){localStorage.setItem(MAILBOX,JSON.stringify(x))}
+function ensureInbox(user){
+  if(!user)return;
+  const all=store();
+  if(!Array.isArray(all[user])){
+    all[user]=[
+      {id:'welcome-'+Date.now(),sender:'Sourabh Projects System',title:'Welcome to your mailbox',body:'Your personal mailbox is ready. Important account messages, rewards and announcements can appear here.',icon:'📬',time:new Date().toISOString(),read:false}
+    ];save(all)
+  }
+}
+function escapeHTML(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function render(){
+  const user=getUser();
+  if(!user){notice.innerHTML='<strong>Login required.</strong> Please log in first to use your personal mailbox.';list.innerHTML='<div class="empty-mail">🔒 Your mailbox is linked to your local account.<br><a class="btn" style="margin-top:16px" href="login.html">Go to Login</a></div>';return}
+  notice.innerHTML='<strong>Signed in as '+escapeHTML(user)+'.</strong> Only messages stored for this account are shown here.';
+  ensureInbox(user); const all=store(); const mails=all[user]||[]; const unread=mails.filter(m=>!m.read).length;
+  document.getElementById('allCount').textContent=mails.length;document.getElementById('unreadCount').textContent=unread;
+  const shown=filter==='unread'?mails.filter(m=>!m.read):mails;
+  if(!shown.length){list.innerHTML='<div class="empty-mail">✨ Nothing here right now.<br><span style="font-size:.9rem">New messages will appear in this mailbox.</span></div>';return}
+  list.innerHTML=shown.map(m=>`<article class="mail-card card ${m.read?'':'unread'}"><div class="mail-row"><div class="mail-icon">${escapeHTML(m.icon||'✉️')}</div><div style="flex:1"><div class="mail-top"><div><div class="mail-sender">${escapeHTML(m.sender||'System')}</div><div style="font-weight:800;margin-top:4px">${escapeHTML(m.title||'Message')}</div></div><div class="mail-time">${new Date(m.time).toLocaleString()}</div></div><div class="mail-body">${escapeHTML(m.body||'')}</div><div class="mail-actions">${m.read?'':'<button class="btn secondary" data-read="'+escapeHTML(m.id)+'">Mark as read</button>'}<button class="btn ghost" data-delete="${escapeHTML(m.id)}">Delete</button></div></div>${m.read?'':'<span class="unread-dot" title="Unread"></span>'}</div></article>`).join('');
+}
+list.addEventListener('click',e=>{const user=getUser();if(!user)return;const all=store();const mails=all[user]||[];const read=e.target.closest('[data-read]');const del=e.target.closest('[data-delete]');if(read){const m=mails.find(x=>x.id===read.dataset.read);if(m)m.read=true;save(all);render();toast('Message marked as read.')}if(del){all[user]=mails.filter(x=>x.id!==del.dataset.delete);save(all);render();toast('Message deleted.')}});
+document.getElementById('markAll').onclick=()=>{const user=getUser();if(!user)return;const all=store();(all[user]||[]).forEach(m=>m.read=true);save(all);render();toast('All messages marked as read.')};
+document.querySelectorAll('.mail-tab').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('.mail-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()});
+render();
+</script>
+</body></html>
